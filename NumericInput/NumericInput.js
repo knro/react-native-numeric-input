@@ -187,7 +187,7 @@ export default class NumericInput extends Component {
         const rightButtonStyle = [
             {
                 position: 'absolute',
-                zIndex: -1,
+                //zIndex: -1,
                 right: 0,
                 height: totalHeight - 2,
                 justifyContent: 'center',
@@ -205,7 +205,7 @@ export default class NumericInput extends Component {
         const leftButtonStyle = [
             {
                 position: 'absolute',
-                zIndex: -1,
+                //zIndex: -1,
                 left: 0,
                 height: totalHeight - 2,
                 justifyContent: 'center',
