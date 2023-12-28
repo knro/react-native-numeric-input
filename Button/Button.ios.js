@@ -1,16 +1,14 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
-    Text,
-    Pressable,
+    TouchableOpacity
 } from 'react-native';
 
 const Button = (props) =>
 {
     return (
-        <Pressable
+        <TouchableOpacity
             style={({pressed}) => [
-                props.style,
                 {
                     backgroundColor: pressed
                         ? '#e06a0d'
@@ -18,8 +16,8 @@ const Button = (props) =>
                 }]}
             disabled={props.disabled}
             onPress={props.onPress}>
-            {props.children}
-        </Pressable>
+            <View style={[props.style, {borderColor: "red", borderWidth: 2}]}>{props?.children}</View>
+        </TouchableOpacity>
     )
 }
 

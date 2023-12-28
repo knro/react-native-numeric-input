@@ -186,9 +186,9 @@ export default class NumericInput extends Component {
         const upDownStyle = [{ alignItems: 'center', width: totalWidth - inputWidth, backgroundColor: this.props.upDownButtonsBackgroundColor, borderRightWidth: 1, borderRightColor: borderColor }, this.props.rounded ? { borderTopRightRadius: borderRadiusTotal, borderBottomRightRadius: borderRadiusTotal } : {}]
         const rightButtonStyle = [
             {
-                position: 'absolute',
+                //position: 'absolute',
                 //zIndex: -1,
-                right: 0,
+                //right: 0,
                 height: totalHeight - 2,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -204,9 +204,9 @@ export default class NumericInput extends Component {
                 : {}]
         const leftButtonStyle = [
             {
-                position: 'absolute',
+                //position: 'absolute',
                 //zIndex: -1,
-                left: 0,
+                //left: 0,
                 height: totalHeight - 2,
                 justifyContent: 'center',
                 alignItems: 'center',
