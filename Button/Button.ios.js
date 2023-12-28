@@ -16,7 +16,7 @@ const Button = (props) =>
                 }]}
             disabled={props.disabled}
             onPress={props.onPress}>
-            <View style={[props.style, {borderColor: "red", borderWidth: 2}]}>{props?.children}</View>
+            <View style={props.style}>{props?.children}</View>
         </TouchableOpacity>
     )
 }
