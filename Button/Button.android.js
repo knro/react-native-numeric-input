@@ -1,11 +1,12 @@
 import React from 'react';
 import {
     View,
+    TouchableOpacity
 } from 'react-native';
 
-import {TouchableOpacity} from "react-native-gesture-handler";
+//import {TouchableOpacity} from "react-native-gesture-handler";
 
-const ButtonAndroid = (props) =>
+const Button = (props) =>
 {
     return (
         <TouchableOpacity
@@ -22,10 +23,10 @@ const ButtonAndroid = (props) =>
     )
 }
 
-ButtonAndroid.defaultProps = {
+Button.defaultProps = {
     onPress: () =>
     {
     }
 }
 
-export default ButtonAndroid;
+export default Button;
