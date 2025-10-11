@@ -43,11 +43,11 @@ export default class NumericInput extends Component {
         if (this.props.maxValue === undefined || (value + this.props.incrementStep < this.props.maxValue)) {
             value = (value + this.props.incrementStep).toFixed(12)
             value = this.props.valueType === 'real' ? parseFloat(value) : parseInt(value)
-            this.setState({ value, stringValue: value.toString() })
+            this.setState({ value, stringValue: value?.toString() })
         } else {
             this.props.onLimitReached(true, 'Reached Maximum Value!')
             value = this.props.maxValue
-            this.setState({ value, stringValue: value.toString() })
+            this.setState({ value, stringValue: value?.toString() })
 
         }
         if (value !== this.props.value)
