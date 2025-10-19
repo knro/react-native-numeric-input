@@ -7,8 +7,10 @@ import { create, PREDEF_RES } from 'react-native-pixel-perfect'
 
 let calcSize = create(PREDEF_RES.iphone7.px)
 
-export default class NumericInput extends Component {
-    constructor(props) {
+export default class NumericInput extends Component
+{
+    constructor(props)
+    {
         super(props)
         const noInitSent = props.initValue !== 0 && !props.initValue
         this.state = {
@@ -21,33 +23,39 @@ export default class NumericInput extends Component {
     }
 
     // this.props refers to the new props
-    componentDidUpdate() {
+    componentDidUpdate()
+    {
         const initSent = !(this.props.initValue !== 0 && !this.props.initValue);
 
         // compare the new value (props.initValue) with the existing/old one (this.state.value)
-        if (this.props.initValue !== this.state.initValue && initSent) {
+        if (this.props.initValue !== this.state.initValue && initSent)
+        {
             this.setState({
                 initValue: this.props.initValue,
                 value: this.props.initValue,
                 lastValid: this.props.initValue,
-                stringValue: this.props.initValue.toString()
+                stringValue: (this.props.initValue || 0).toString()
             });
         }
     }
 
-    updateBaseResolution = (width, height) => {
+    updateBaseResolution = (width, height) =>
+    {
         calcSize = create({ width, height })
     }
-    inc = () => {
+    inc = () =>
+    {
         let value = this.props.value && (typeof this.props.value === 'number') ? this.props.value : this.state.value
-        if (this.props.maxValue === undefined || (value + this.props.incrementStep < this.props.maxValue)) {
+        if (this.props.maxValue === undefined || (value + this.props.incrementStep < this.props.maxValue))
+        {
             value = (value + this.props.incrementStep).toFixed(12)
             value = this.props.valueType === 'real' ? parseFloat(value) : parseInt(value)
-            this.setState({ value, stringValue: value?.toString() })
-        } else {
+            this.setState({ value, stringValue: (value || 0).toString() })
+        } else
+        {
             this.props.onLimitReached(true, 'Reached Maximum Value!')
             value = this.props.maxValue
-            this.setState({ value, stringValue: value?.toString() })
+            this.setState({ value, stringValue: (value || 0).toString() })
 
         }
         if (value !== this.props.value)
@@ -56,12 +64,15 @@ export default class NumericInput extends Component {
             this.props.onBlur && this.props.onBlur(Number(value))
         }
     }
-    dec = () => {
+    dec = () =>
+    {
         let value = this.props.value && (typeof this.props.value === 'number') ? this.props.value : this.state.value
-        if (this.props.minValue === undefined || (value - this.props.decrementStep > this.props.minValue)) {
+        if (this.props.minValue === undefined || (value - this.props.decrementStep > this.props.minValue))
+        {
             value = (value - this.props.decrementStep).toFixed(12)
             value = this.props.valueType === 'real' ? parseFloat(value) : parseInt(value)
-        } else {
+        } else
+        {
             this.props.onLimitReached(false, 'Reached Minimum Value!')
             value = this.props.minValue
         }
@@ -70,7 +81,7 @@ export default class NumericInput extends Component {
             this.props.onChange && this.props.onChange(Number(value))
             this.props.onBlur && this.props.onBlur(Number(value))
         }
-        this.setState({ value, stringValue: value.toString() })
+        this.setState({ value, stringValue: (value || 0).toString() })
     }
     isLegalValue = (value, mReal, mInt) => value === '' || (((this.props.valueType === 'real' && mReal(value)) || (this.props.valueType !== 'real' && mInt(value))) && (this.props.maxValue === null || (parseFloat(value) <= this.props.maxValue)) && (this.props.minValue === null || (parseFloat(value) >= this.props.minValue)))
 
@@ -78,32 +89,42 @@ export default class NumericInput extends Component {
 
     intMatch = (value) => value && value.match(/-?\d+/) && value.match(/-?\d+/)[0] === value.match(/-?\d+/).input
 
-    onChange = (value) => {
+    onChange = (value) =>
+    {
         let currValue = typeof this.props.value === 'number' ? this.props.value : this.state.value
-        if ((value.length === 1 && value === '-') || (value.length === 2 && value === '0-')) {
+        if ((value.length === 1 && value === '-') || (value.length === 2 && value === '0-'))
+        {
             this.setState({ stringValue: '-' })
             return
         }
-        if ((value.length === 1 && value === '.') || (value.length === 2 && value === '0.')) {
+        if ((value.length === 1 && value === '.') || (value.length === 2 && value === '0.'))
+        {
             this.setState({ stringValue: '0.' })
             return
         }
-        if ((value.charAt(value.length - 1) === '.')) {
+        if ((value.charAt(value.length - 1) === '.'))
+        {
             this.setState({ stringValue: value })
             return
         }
         let legal = this.isLegalValue(value, this.realMatch, this.intMatch)
-        if (legal) {
+        if (legal)
+        {
             this.setState({ lastValid: value })
         }
-        if (!legal && !this.props.validateOnBlur) {
-            if (this.ref) {
+        if (!legal && !this.props.validateOnBlur)
+        {
+            if (this.ref)
+            {
                 this.ref.blur()
-                setTimeout(() => {
+                setTimeout(() =>
+                {
                     this.ref.clear()
-                    setTimeout(() => {
+                    setTimeout(() =>
+                    {
                         this.props.onChange && this.props.onChange(currValue - 1)
-                        this.setState({ value: currValue - 1 }, () => {
+                        this.setState({ value: currValue - 1 }, () =>
+                        {
                             this.setState({ value: currValue, legal })
                             this.props.onChange && this.props.onChange(currValue)
                         })
@@ -112,7 +133,8 @@ export default class NumericInput extends Component {
                 setTimeout(() => this.ref.focus(), 20)
             }
 
-        } else if (!legal && this.props.validateOnBlur) {
+        } else if (!legal && this.props.validateOnBlur)
+        {
             this.setState({ stringValue: value })
             let parsedValue = this.props.valueType === 'real' ? parseFloat(value) : parseInt(value)
             parsedValue = isNaN(parsedValue) ? 0 : parsedValue
@@ -120,7 +142,8 @@ export default class NumericInput extends Component {
                 this.props.onChange && this.props.onChange(parsedValue)
             //this.setState({ value: parsedValue, legal, stringValue: parsedValue.toString() })
             this.setState({ value: parsedValue, legal, stringValue: value })
-        } else {
+        } else
+        {
             this.setState({ stringValue: value })
             let parsedValue = this.props.valueType === 'real' ? parseFloat(value) : parseInt(value)
             parsedValue = isNaN(parsedValue) ? 0 : parsedValue
@@ -130,24 +153,32 @@ export default class NumericInput extends Component {
 
         }
     }
-    onBlur = () => {
+    onBlur = () =>
+    {
 
         let match = this.state.stringValue.match(/-?[0-9]\d*(\.\d+)?/)
         let legal = match && match[0] === match.input && ((this.props.maxValue === null || (parseFloat(this.state.stringValue) <= this.props.maxValue)) && (this.props.minValue === null || (parseFloat(this.state.stringValue) >= this.props.minValue)))
-        if (!legal) {
-            if (!isNaN(this.props.minValue) && (parseFloat(this.state.stringValue) <= this.props.minValue)) {
+        if (!legal)
+        {
+            if (!isNaN(this.props.minValue) && (parseFloat(this.state.stringValue) <= this.props.minValue))
+            {
                 this.props.onLimitReached(true, 'Reached Minimum Value!')
             }
-            if (!isNaN(this.props.maxValue) && (parseFloat(this.state.stringValue) >= this.props.maxValue)) {
+            if (!isNaN(this.props.maxValue) && (parseFloat(this.state.stringValue) >= this.props.maxValue))
+            {
                 this.props.onLimitReached(false, 'Reached Maximum Value!')
             }
-            if (this.ref) {
+            if (this.ref)
+            {
                 this.ref.blur()
-                setTimeout(() => {
+                setTimeout(() =>
+                {
                     this.ref.clear()
-                    setTimeout(() => {
+                    setTimeout(() =>
+                    {
                         this.props.onChange && this.props.onChange(this.state.lastValid)
-                        this.setState({ value: this.state.lastValid }, () => {
+                        this.setState({ value: this.state.lastValid }, () =>
+                        {
                             this.setState({ value: this.state.lastValid, stringValue: this.state.lastValid.toString() })
                             this.props.onChange && this.props.onChange(this.state.lastValid)
                         })
@@ -159,12 +190,14 @@ export default class NumericInput extends Component {
         this.props.onBlur && this.props.onBlur(this.state.value)
     }
 
-    onFocus = () => {
+    onFocus = () =>
+    {
         this.setState({ lastValid: this.state.value })
         this.props.onFocus && this.props.onFocus()
     }
 
-    render() {
+    render()
+    {
         const editable = this.props.editable
         const sepratorWidth = (typeof this.props.separatorWidth === 'undefined') ? this.props.sepratorWidth : this.props.separatorWidth;//supporting old property name sepratorWidth
         const borderColor = this.props.borderColor
@@ -226,7 +259,7 @@ export default class NumericInput extends Component {
         }
         if (this.props.type === 'up-down')
             return (
-                <View style={[inputContainerStyle, {opacity: editable ? 1 : 0.6}]}>
+                <View style={[inputContainerStyle, { opacity: editable ? 1 : 0.6 }]}>
                     <TextInput {...this.props.extraTextInputProps} editable={editable} returnKeyType='done' underlineColorAndroid='rgba(0,0,0,0)' keyboardType='numeric' value={this.state.stringValue} onChangeText={this.onChange} style={inputStyle} ref={ref => this.ref = ref} onBlur={this.onBlur} onFocus={this.onFocus} />
                     <View style={upDownStyle}>
                         <Button disabled={!editable} onPress={this.inc} style={{ flex: 1, width: '100%', alignItems: 'center' }}>
@@ -238,7 +271,7 @@ export default class NumericInput extends Component {
                     </View>
                 </View>)
         else return (
-            <View style={[inputContainerStyle, {opacity: editable ? 1 : 0.6}]}>
+            <View style={[inputContainerStyle, { opacity: editable ? 1 : 0.6 }]}>
                 <Button disabled={!editable} onPress={this.dec} style={leftButtonStyle}>
                     <Icon name='remove' size={fontSize} style={[...iconStyle, maxReached ? this.props.reachMaxDecIconStyle : {}, minReached ? this.props.reachMinDecIconStyle : {}]} />
                 </Button>
