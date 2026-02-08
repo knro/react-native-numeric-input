@@ -39,6 +39,12 @@ export default class NumericInput extends Component
         }
     }
 
+    componentWillUnmount()
+    {
+        // Clear ref to prevent crashes from pending setTimeout callbacks
+        this.ref = null
+    }
+
     updateBaseResolution = (width, height) =>
     {
         calcSize = create({ width, height })
@@ -119,18 +125,27 @@ export default class NumericInput extends Component
                 this.ref.blur()
                 setTimeout(() =>
                 {
-                    this.ref.clear()
-                    setTimeout(() =>
+                    if (this.ref)
                     {
-                        this.props.onChange && this.props.onChange(currValue - 1)
-                        this.setState({ value: currValue - 1 }, () =>
+                        this.ref.clear()
+                        setTimeout(() =>
                         {
-                            this.setState({ value: currValue, legal })
-                            this.props.onChange && this.props.onChange(currValue)
-                        })
-                    }, 10)
+                            this.props.onChange && this.props.onChange(currValue - 1)
+                            this.setState({ value: currValue - 1 }, () =>
+                            {
+                                this.setState({ value: currValue, legal })
+                                this.props.onChange && this.props.onChange(currValue)
+                            })
+                        }, 10)
+                    }
                 }, 15)
-                setTimeout(() => this.ref.focus(), 20)
+                setTimeout(() => 
+                {
+                    if (this.ref)
+                    {
+                        this.ref.focus()
+                    }
+                }, 20)
             }
 
         } else if (!legal && this.props.validateOnBlur)
@@ -173,18 +188,27 @@ export default class NumericInput extends Component
                 this.ref.blur()
                 setTimeout(() =>
                 {
-                    this.ref.clear()
-                    setTimeout(() =>
+                    if (this.ref)
                     {
-                        this.props.onChange && this.props.onChange(this.state.lastValid)
-                        this.setState({ value: this.state.lastValid }, () =>
+                        this.ref.clear()
+                        setTimeout(() =>
                         {
-                            this.setState({ value: this.state.lastValid, stringValue: this.state.lastValid.toString() })
                             this.props.onChange && this.props.onChange(this.state.lastValid)
-                        })
-                    }, 10)
+                            this.setState({ value: this.state.lastValid }, () =>
+                            {
+                                this.setState({ value: this.state.lastValid, stringValue: this.state.lastValid.toString() })
+                                this.props.onChange && this.props.onChange(this.state.lastValid)
+                            })
+                        }, 10)
+                    }
                 }, 15)
-                setTimeout(() => this.ref.focus(), 50)
+                setTimeout(() => 
+                {
+                    if (this.ref)
+                    {
+                        this.ref.focus()
+                    }
+                }, 50)
             }
         }
         this.props.onBlur && this.props.onBlur(this.state.value)
