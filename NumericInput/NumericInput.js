@@ -51,16 +51,18 @@ export default class NumericInput extends Component
     }
     inc = () =>
     {
-        let value = this.props.value && (typeof this.props.value === 'number') ? this.props.value : this.state.value
-        if (this.props.maxValue === undefined || (value + this.props.incrementStep < this.props.maxValue))
+        let value = Number(this.props.value && (typeof this.props.value === 'number') ? this.props.value : this.state.value) || 0
+        let step = Number(this.props.incrementStep) || 1
+        if (this.props.maxValue === undefined || (value + step < this.props.maxValue))
         {
-            value = (value + this.props.incrementStep).toFixed(12)
+            value = Number((value + step).toFixed(12))
             value = this.props.valueType === 'real' ? parseFloat(value) : parseInt(value)
+            if (isNaN(value)) value = 0
             this.setState({ value, stringValue: (value || 0).toString() })
         } else
         {
-            this.props.onLimitReached(true, 'Reached Maximum Value!')
-            value = this.props.maxValue
+            this.props.onLimitReached && this.props.onLimitReached(true, 'Reached Maximum Value!')
+            value = Number(this.props.maxValue) || 0
             this.setState({ value, stringValue: (value || 0).toString() })
 
         }
@@ -72,15 +74,17 @@ export default class NumericInput extends Component
     }
     dec = () =>
     {
-        let value = this.props.value && (typeof this.props.value === 'number') ? this.props.value : this.state.value
-        if (this.props.minValue === undefined || (value - this.props.decrementStep > this.props.minValue))
+        let value = Number(this.props.value && (typeof this.props.value === 'number') ? this.props.value : this.state.value) || 0
+        let step = Number(this.props.decrementStep) || 1
+        if (this.props.minValue === undefined || (value - step > this.props.minValue))
         {
-            value = (value - this.props.decrementStep).toFixed(12)
+            value = Number((value - step).toFixed(12))
             value = this.props.valueType === 'real' ? parseFloat(value) : parseInt(value)
+            if (isNaN(value)) value = 0
         } else
         {
-            this.props.onLimitReached(false, 'Reached Minimum Value!')
-            value = this.props.minValue
+            this.props.onLimitReached && this.props.onLimitReached(false, 'Reached Minimum Value!')
+            value = Number(this.props.minValue) || 0
         }
         if (value !== this.props.value)
         {
