@@ -51,7 +51,7 @@ export default class NumericInput extends Component
     }
     inc = () =>
     {
-        let value = Number(this.props.value && (typeof this.props.value === 'number') ? this.props.value : this.state.value) || 0
+        let value = Number(typeof this.props.value === 'number' && !isNaN(this.props.value) ? this.props.value : this.state.value) || 0
         let step = Number(this.props.incrementStep) || 1
         if (this.props.maxValue === undefined || (value + step < this.props.maxValue))
         {
@@ -74,7 +74,7 @@ export default class NumericInput extends Component
     }
     dec = () =>
     {
-        let value = Number(this.props.value && (typeof this.props.value === 'number') ? this.props.value : this.state.value) || 0
+        let value = Number(typeof this.props.value === 'number' && !isNaN(this.props.value) ? this.props.value : this.state.value) || 0
         let step = Number(this.props.decrementStep) || 1
         if (this.props.minValue === undefined || (value - step > this.props.minValue))
         {
